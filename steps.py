@@ -15,7 +15,7 @@ def check_status_code(step, status_code):
 
 @step('I make a request to end point')
 def make_request(step):
-    world.response = requests.get('http://dashing-dev.internal.ft.com/widgets/lists/')
+    world.response = requests.get('http://dashing-dev.internal.ft.com/tiles/lists')
 
 
 @step('I should see a list of host names if tiles are black')
@@ -25,7 +25,7 @@ def find_hosts(step):
     for i in range(0, length_array-1):
         host_name = array_hosts[i].strip('_new.rb')
         try:
-            world.get_response = requests.get('http://dashing-dev.internal.ft.com/widgets/'+host_name+'.json')
+            world.get_response = requests.get('http://dashing-dev.internal.ft.com/tiles/'+host_name+'.json')
             data = world.get_response.text
         except:
             print host_name
