@@ -7,7 +7,7 @@ Feature: Dashing Automation Tests
     | endpoint  | status_code |
     | Test      | 200         |
 
-  Scenario Outline: Get all data id's and data url's
+  Scenario Outline: Get all data ids and data urls
     I list all data id's with corresponding data url's
 
 

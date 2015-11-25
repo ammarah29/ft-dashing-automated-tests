@@ -15,12 +15,13 @@ def check_status_code(step, status_code):
     assert_equal(world.response.status_code, int(status_code))
 
 
-@step('I should see a list of host names if tiles are black')
-def
+@step('I list all data ids with corresponding data urls')
+def find_hosts(step):
+    data = urllib2.urlopen('http://dashing-dev.internal.ft.com/blue')
 
 @step('I should see a list of host names if tiles are black')
 def
-    
+
 @step('I search for background dimgray')
 def
 
