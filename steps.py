@@ -1,6 +1,8 @@
 import requests
 from lettuce import *
 from nose.tools import assert_equal
+import urllib2
+from BeautifulSoup import *
 
 
 @step('I make the request to dashing')
@@ -15,7 +17,7 @@ def check_status_code(step, status_code):
 
 @step('I make a request to end point')
 def make_request(step):
-    world.response = requests.get('http://dashing-dev.internal.ft.com/tiles/lists')
+    world.response = requests.get('http://dashing-dev.internal.ft.com/widgets/lists/')
 
 
 @step('I should see a list of host names if tiles are black')
@@ -25,9 +27,20 @@ def find_hosts(step):
     for i in range(0, length_array-1):
         host_name = array_hosts[i].strip('_new.rb')
         try:
-            world.get_response = requests.get('http://dashing-dev.internal.ft.com/tiles/'+host_name+'.json')
+            world.get_response = requests.get('http://dashing-dev.internal.ft.com/widgets/'+host_name+'.json')
             data = world.get_response.text
         except:
             print host_name
 
+
+@step('I search for grey tiles')
+def find_hosts(step):
+    data = urllib2.urlopen('http://dashing.internal.ft.com/blue')
+    #for lines in data.readlines():
+    soup = BeautifulSoup(data)
+        #div = soup.find(id="ftmon04163-lvpr-uk-p")
+    div = soup.div
+    maxTemp = soup.findAll(attrs={"div"})
+    #list = soup.findAll("div", {"id": "data-id"})
+    print maxTemp
 
