@@ -3,7 +3,6 @@ from lettuce import *
 from nose.tools import assert_equal
 import urllib2
 from BeautifulSoup import *
-from lxml import html
 import requests
 
 
