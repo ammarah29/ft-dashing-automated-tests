@@ -23,16 +23,33 @@ def find_hosts(step):
     soup = BeautifulSoup(page_source)
 
     divparent = soup.findAll('div', {"data-id": True}, {"data-url": True})
+    target = open('List_of_Hosts', 'w')
     for div_content in divparent:
         if div_content['data-id'] == 'reload':
             continue
         else:
-            print div_content['data-id'], div_content['data-url']
+
+            target.write(div_content['data-id'] + '|' + div_content['data-url'] + '|' + '\n')
+
+    target.close()
+
+
+@step('I should see a list of host names if tiles are black')
+def find_black_tile_hosts(step):
+    target = open('List_of_Hosts', 'r')
+
+    for lines in target:
+        host_name = lines.split('|')[0]
+        try:
+            world.get_response = requests.get('http://dashing-dev.internal.ft.com/tiles/' + host_name + '.json')
+            data = world.get_response.text
+            if not data:
+                print host_name +'\n'
+        except Exception:
+            print 'No status endpoint'
 
 
 '''
-@step('I should see a list of host names if tiles are black')
-def
 
 @step('I search for background dimgray')
 def
