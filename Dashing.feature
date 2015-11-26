@@ -15,8 +15,7 @@ Feature: Dashing Automation Tests
    I should see a list of host names if tiles are black
 
 
-#  Scenario Outline: Grey tiles check
- #   I search for background dimgray
-  #  If dimgray then check status code of data url
+  Scenario Outline: Grey tiles check
+    I search for tiles with background dimgray
 
-    #
+
