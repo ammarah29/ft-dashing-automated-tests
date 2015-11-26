@@ -3,6 +3,8 @@ from lettuce import *
 from nose.tools import assert_equal
 import urllib2
 from BeautifulSoup import *
+from lxml import html
+import requests
 
 
 @step('I make the request to dashing')
@@ -17,8 +19,19 @@ def check_status_code(step, status_code):
 
 @step('I list all data ids with corresponding data urls')
 def find_hosts(step):
-    data = urllib2.urlopen('http://dashing-dev.internal.ft.com/blue')
+    response = urllib2.urlopen("http://dashing-dev.internal.ft.com/blue")
+    page_source = response.read()
+    soup = BeautifulSoup(page_source)
 
+    divparent = soup.findAll('div', {"data-id": True}, {"data-url": True})
+    for div_content in divparent:
+        if div_content['data-id'] == 'reload':
+            continue
+        else:
+            print div_content['data-id'], div_content['data-url']
+
+
+'''
 @step('I should see a list of host names if tiles are black')
 def
 
@@ -28,7 +41,7 @@ def
 @step('If dimgray then check status code of data url')
 def
 
-'''
+
 @step('I make a request to end point')
 def make_request(step):
     world.response = requests.get('http://dashing-dev.internal.ft.com/widgets/lists/')
