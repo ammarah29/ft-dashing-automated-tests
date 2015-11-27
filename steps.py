@@ -10,7 +10,7 @@ import sys
 
 @step('I make the request to dashing')
 def load_dashing(step):
-    world.response = requests.get("http://dashing-dev.internal.ft.com/blue")
+    world.response = requests.get("http://dashing-int.internal.ft.com/blue")
 
 
 @step('I should see response (\d+)')
@@ -21,7 +21,7 @@ def check_status_code(step, status_code):
 @step('I list all data ids with corresponding data urls')
 def find_hosts(step):
     try:
-        response = urllib2.urlopen("http://dashing-dev.internal.ft.com/blue")
+        response = urllib2.urlopen("http://dashing-int.internal.ft.com/blue")
         page_source = response.read()
         soup = BeautifulSoup(page_source)
         divparent = soup.findAll('div', {"data-id": True}, {"data-url": True})
@@ -45,7 +45,7 @@ def find_black_tile_hosts(step):
     for lines in target:
         line_split = lines.split('|')
         host_name = line_split[0]
-        world.get_response = requests.get('http://dashing-dev.internal.ft.com/tiles/' + host_name + '.json')
+        world.get_response = requests.get('http://dashing-int.internal.ft.com/widgets/' + host_name + '.json')
         data = world.get_response.text
 
         if not data:
@@ -67,7 +67,7 @@ def find_gray_backgroud_tiles(step):
         host_name = line_split[0]
         url = line_split[1]
         if 'nagios' in url or 'zabbix' in url or 'healthcheck' in url:
-            world.get_response = requests.get('http://dashing-dev.internal.ft.com/tiles/' + host_name + '.json')
+            world.get_response = requests.get('http://dashing-int.internal.ft.com/widgets/' + host_name + '.json')
             data = json.loads(world.get_response.content)
 
             if data['status'] == 'background:dimgray' or data['status'] == 'noconn':
