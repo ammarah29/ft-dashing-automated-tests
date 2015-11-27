@@ -16,6 +16,6 @@ Feature: Dashing Automation Tests
 
 
   Scenario Outline: Grey tiles check
-    I search for tiles with background dimgray
+    I search for grey tiles and make sure that they should be grey
 
 
