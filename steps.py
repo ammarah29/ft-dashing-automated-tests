@@ -40,7 +40,7 @@ def find_hosts(step):
 def find_black_tile_hosts(step):
     target = open('List_of_Hosts', 'r')
     blacklist = []
-    blackbool = True
+    blackbool = False
 
     for lines in target:
         line_split = lines.split('|')
