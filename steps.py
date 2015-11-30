@@ -45,7 +45,7 @@ def find_black_tile_hosts(step):
     for lines in target:
         line_split = lines.split('|')
         host_name = line_split[0]
-        world.get_response = requests.get('http://dashing.internal.ft.com/widgets/' + host_name + '.json')
+        world.get_response = requests.get('http://dashing.internal.ft.com/tiles/' + host_name + '.json')
         data = world.get_response.text
 
         if not data:
@@ -66,20 +66,25 @@ def find_gray_backgroud_tiles(step):
         line_split = lines.split('|')
         host_name = line_split[0]
         url = line_split[1]
-        if 'nagios' in url or 'zabbix' in url or 'healthcheck' in url:
-            world.get_response = requests.get('http://dashing.internal.ft.com/widgets/' + host_name + '.json')
+        world.get_response = requests.get('http://dashing.internal.ft.com/tiles/' + host_name + '.json')
+
+        # For Nagios
+        if 'nagios' in url:
+            data = world.get_response.content
+            status = data.split(',')[5].split('"')[3]
+
+        # For zabbix and healthcheck tiles
+        if 'zabbix' in url or 'healthcheck' in url:
             data = json.loads(world.get_response.content)
+            status = data['status']
 
-            if data['status'] == 'background:dimgray' or data['status'] == 'noconn':
-                try:
-
-                    world.get_status = requests.get(url).status_code
-
-                    if world.get_status == 200:
-                        #print host_name, '\n'
-                        fakegrey = True
-                        fakegreylist.append(host_name)
-                except Exception:
-                    pass
+        if status == 'background:dimgray' or status == 'noconn':
+            try:
+                world.get_status = requests.get(url).status_code
+                if world.get_status == 200:
+                    fakegrey = True
+                    fakegreylist.append(host_name)
+            except Exception:
+                pass
 
     assert_equal(fakegrey,False,msg='ERROR:These grey tiles should not be grey:'+ str(fakegreylist))
